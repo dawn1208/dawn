@@ -1,235 +1,124 @@
-﻿import streamlit as st
+import json
+from pathlib import Path
+import streamlit as st
 
-# Configure page layout and aesthetics
 st.set_page_config(
-    page_title="Hành Trình Thanh Xuân - Interactive Presentation",
-    page_icon="🌸",
+    page_title="Những mảnh suy nghĩ",
+    page_icon="✦",
     layout="centered",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
+
+DATA_FILE = Path(__file__).parent / "timeline_data.json"
+
+def load_data():
+    with DATA_FILE.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+data = load_data()
 
 st.markdown("""
 <style>
-    /* Global Styling - Bright Youthful Pastel & Clean White Palette */
-    .stApp {
-        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-        color: #2d3748;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    
-    /* Hide standard Streamlit header and footer for a clean presentation feel */
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-    
-    /* Presentation Card Container */
-    .presentation-card {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 24px;
-        padding: 45px 50px;
-        box-shadow: 0 20px 40px rgba(100, 116, 139, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-        margin-top: 30px;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    /* Typography & Headings */
-    .slide-tag {
-        display: inline-block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #818cf8;
-        background: rgba(129, 140, 248, 0.1);
-        padding: 6px 14px;
-        border-radius: 30px;
-        margin-bottom: 20px;
-    }
-    
-    .slide-title {
-        font-size: 2.4rem;
-        font-weight: 800;
-        color: #1e293b;
-        margin-bottom: 20px;
-        line-height: 1.3;
-        background: linear-gradient(120deg, #3b82f6, #ec4899);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    /* Bullet points / sequential reveal items */
-    .reveal-item {
-        font-size: 1.15rem;
-        color: #475569;
-        background: rgba(248, 250, 252, 0.7);
-        border-left: 4px solid #f472b6;
-        padding: 16px 20px;
-        border-radius: 0 12px 12px 0;
-        margin-bottom: 14px;
-        animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    }
-    
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(15px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    /* Progress and Navigation Indicators */
-    .progress-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(226, 232, 240, 0.8);
-    }
-    
-    .progress-text {
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: #64748b;
-    }
-    
-    /* Customize Streamlit Buttons to fit the pastel theme */
-    .stButton button {
-        border-radius: 14px !important;
-        font-weight: 600 !important;
-        padding: 0.6rem 1.4rem !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15) !important;
-    }
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap');
+:root { --ink: #24231f; --muted: #817d74; --paper: #f7f4ee; --accent: #a47a52; }
+.stApp { background: var(--paper); color: var(--ink); }
+.block-container { max-width: 760px; padding-top: 3rem; padding-bottom: 4rem; }
+h1, h2, h3, .serif { font-family: 'Playfair Display', Georgia, serif !important; }
+.eyebrow { text-transform: uppercase; letter-spacing: .22em; font-size: .72rem; color: var(--muted); }
+.intro { font-size: 1.05rem; line-height: 1.85; color: #666158; max-width: 590px; }
+.chapter-kicker { color: var(--accent); text-transform: uppercase; letter-spacing: .16em; font-size: .72rem; }
+.fragment {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.35rem, 4vw, 2rem);
+    line-height: 1.65;
+    color: var(--ink);
+    padding: 1.05rem 0;
+    border-bottom: 1px solid rgba(70,60,45,.13);
+    animation: appear .45s ease-out;
+}
+@keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.small-note { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+div.stButton > button {
+    border-radius: 999px; border: 1px solid #a47a52; background: #a47a52;
+    color: white; padding: .55rem 1.3rem; min-height: 2.8rem;
+}
+div.stButton > button:hover { background: #876341; border-color: #876341; color: white; }
+hr { border-color: rgba(70,60,45,.15); }
+[data-testid="stProgressBar"] > div > div { background-color: #a47a52; }
+footer { visibility: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
-slides_data = [
-    {
-        "tag": "Chương I • Khởi Đầu",
-        "title": "🌸 Hơi Thở Mùa Hè & Những Ước Mơ Đầu Tiên",
-        "content": [
-            "Chào mừng bạn đến với không gian thuyết trình số mang phong cách thanh xuân tươi sáng.",
-            "Nơi mỗi cú click chuột sẽ mở ra một chương mới trong câu chuyện của chúng ta.",
-            "Hãy cùng nhìn lại những khoảnh khắc rực rỡ nhất của tuổi trẻ đầy nhiệt huyết."
-        ]
-    },
-    {
-        "tag": "Chương II • Hành Trình",
-        "title": "✨ Khám Phá Bản Thân & Vượt Qua Giới Hạn",
-        "content": [
-            "Tuổi trẻ không phải là thời kỳ của cuộc sống, mà là trạng thái của tâm hồn.",
-            "Dám nghĩ, dám làm, dám đương đầu với mọi thử thách và bão giông.",
-            "Mỗi thất bại đều là một bài học quý giá nuôi dưỡng sự trưởng thành.",
-            "Tỏa sáng rực rỡ theo cách riêng biệt mà không cần phải lặp lại bất kỳ ai."
-        ]
-    },
-    {
-        "tag": "Chương III • Kỷ Niệm",
-        "title": "🌿 Những Người Bạn Đồng Hành Dưới Ánh Nắng",
-        "content": [
-            "Cùng nhau đi qua những con đường ngập tràn hoa phượng đỏ và tiếng ve kêu.",
-            "Những buổi chuyện trò thâu đêm suốt sáng về tương lai và hoài bão.",
-            "Tình bạn chân thành chính là hành trang vững chãi nhất trên mọi chặng đường."
-        ]
-    },
-    {
-        "tag": "Chương IV • Tương Lai",
-        "title": "🕊️ Chắp Cánh Bay Cao Tới Những Chân Trời Mới",
-        "content": [
-            "Thanh xuân tuy ngắn ngủi nhưng dư âm và giá trị của nó là vĩnh cửu.",
-            "Hãy giữ mãi ngọn lửa đam mê trong trái tim dù sau này có đi đến đâu.",
-            "Cảm ơn bạn đã đồng hành trong bài thuyết trình này. Chúc bạn một đời bình an và rực rỡ!"
-        ]
-    }
-]
+if "chapter_idx" not in st.session_state:
+    st.session_state.chapter_idx = 0
+if "revealed" not in st.session_state:
+    st.session_state.revealed = 0
 
-if "slide_idx" not in st.session_state:
-    st.session_state.slide_idx = 0
+chapters = data["chapters"]
+chapter_idx = min(st.session_state.chapter_idx, len(chapters) - 1)
+chapter = chapters[chapter_idx]
+fragments = chapter["fragments"]
+revealed = min(st.session_state.revealed, len(fragments))
 
-if "step_idx" not in st.session_state:
-    st.session_state.step_idx = 0
+st.markdown(f"<div class='eyebrow'>{data.get('eyebrow', 'Một câu chuyện — từ góc nhìn của tôi')}</div>", unsafe_allow_html=True)
+st.markdown(f"<h1 style='font-size:clamp(2.3rem,7vw,4rem); line-height:1.13; margin:1rem 0 .8rem'>{data.get('title', 'Những mảnh suy nghĩ')}</h1>", unsafe_allow_html=True)
+st.markdown(f"<p class='intro'>{data.get('subtitle', '')}</p>", unsafe_allow_html=True)
+st.write("")
 
-# Helper functions for navigation logic
-def advance_presentation():
-    current_slide = slides_data[st.session_state.slide_idx]
-    if st.session_state.step_idx < len(current_slide["content"]) - 1:
-        st.session_state.step_idx += 1
+# Chapter navigation
+options = [f"{i+1:02d} · {c['title']}" for i, c in enumerate(chapters)]
+selected = st.selectbox(
+    "Chọn một khoảng thời gian",
+    options=range(len(chapters)),
+    format_func=lambda i: options[i],
+    index=chapter_idx,
+    label_visibility="collapsed",
+)
+if selected != chapter_idx:
+    st.session_state.chapter_idx = selected
+    st.session_state.revealed = 0
+    st.rerun()
+
+st.markdown(f"<div class='chapter-kicker'>CHƯƠNG {chapter_idx + 1:02d} / {len(chapters):02d}</div>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='font-size:2rem; margin:.35rem 0 .25rem'>{chapter['title']}</h2>", unsafe_allow_html=True)
+if chapter.get("period"):
+    st.markdown(f"<p class='small-note'>{chapter['period']}</p>", unsafe_allow_html=True)
+if chapter.get("opening"):
+    st.markdown(f"<p style='color:#666158; line-height:1.7'>{chapter['opening']}</p>", unsafe_allow_html=True)
+
+st.progress(revealed / max(len(fragments), 1))
+st.caption(f"{revealed} / {len(fragments)} mảnh suy nghĩ đã mở")
+
+for line in fragments[:revealed]:
+    st.markdown(f"<div class='fragment'>{line}</div>", unsafe_allow_html=True)
+
+st.write("")
+left, right = st.columns([1, 1])
+with left:
+    if revealed < len(fragments):
+        if st.button("Mở mảnh tiếp theo  →", use_container_width=True):
+            st.session_state.revealed += 1
+            st.rerun()
     else:
-        if st.session_state.slide_idx < len(slides_data) - 1:
-            st.session_state.slide_idx += 1
-            st.session_state.step_idx = 0
+        st.button("Đã đọc hết chương này", disabled=True, use_container_width=True)
+with right:
+    if st.button("Bắt đầu lại chương", use_container_width=True):
+        st.session_state.revealed = 0
+        st.rerun()
 
-def previous_presentation():
-    if st.session_state.step_idx > 0:
-        st.session_state.step_idx -= 1
+st.write("")
+if revealed == len(fragments):
+    if chapter_idx < len(chapters) - 1:
+        if st.button("Sang khoảng thời gian tiếp theo  ↗", use_container_width=True):
+            st.session_state.chapter_idx += 1
+            st.session_state.revealed = 0
+            st.rerun()
     else:
-        if st.session_state.slide_idx > 0:
-            st.session_state.slide_idx -= 1
-            st.session_state.step_idx = len(slides_data[st.session_state.slide_idx]["content"]) - 1
+        st.markdown("---")
+        st.markdown("<p class='small-note'>Câu chuyện dừng lại ở hiện tại. Phần tiếp theo vẫn chưa được viết.</p>", unsafe_allow_html=True)
 
-def reset_presentation():
-    st.session_state.slide_idx = 0
-    st.session_state.step_idx = 0
-
-current_slide = slides_data[st.session_state.slide_idx]
-
-st.markdown('<div class="presentation-card">', unsafe_allow_html=True)
-
-# Slide Tag & Title
-st.markdown(f'<div class="slide-tag">{current_slide["tag"]}</div>', unsafe_allow_html=True)
-st.markdown(f'<div class="slide-title">{current_slide["title"]}</div>', unsafe_allow_html=True)
-
-# Render revealed bullet points up to current step_idx
-for i in range(st.session_state.step_idx + 1):
-    st.markdown(f'<div class="reveal-item">💡 {current_slide["content"][i]}</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
-
-with col1:
-    if st.button("⏮️ Đầu", use_container_width=True, help="Quay về slide đầu tiên"):
-        reset_presentation()
-        st.rerun()
-
-with col2:
-    if st.button("⬅️ Trước", use_container_width=True, help="Quay lại ý trước hoặc slide trước"):
-        previous_presentation()
-        st.rerun()
-
-with col3:
-    # Progress indicator text
-    total_slides = len(slides_data)
-    current_step_num = st.session_state.step_idx + 1
-    total_steps_in_slide = len(current_slide["content"])
-    st.markdown(
-        f"<div style='text-align: center; font-weight: 600; color: #64748b; padding-top: 8px;'>"
-        f"Slide {st.session_state.slide_idx + 1} / {total_slides} &nbsp;|&nbsp; Ý {current_step_num}/{total_steps_in_slide}"
-        f"</div>",
-        unsafe_allow_html=True
-    )
-
-with col4:
-    if st.button("Tiếp ➡️", use_container_width=True, type="primary", help="Hiện ý tiếp theo hoặc chuyển slide mới"):
-        advance_presentation()
-        st.rerun()
-
-with col5:
-    if st.button("🔄 Làm lại", use_container_width=True, help="Chạy lại từ đầu"):
-        reset_presentation()
-        st.rerun()
-
-st.markdown("<br>", unsafe_allow_html=True)
-click_col1, click_col2, click_col3 = st.columns([1, 2, 1])
-with click_col2:
-    if st.button("✨ Click vào đây để xem tiếp nội dung ✨", use_container_width=True, type="secondary"):
-        advance_presentation()
-        st.rerun()
+st.markdown("---")
+st.markdown(
+    "<p class='small-note'>Đây là những suy nghĩ từ một góc nhìn. Người đọc có thể cảm nhận theo cách riêng; không có câu trả lời nào được yêu cầu.</p>",
+    unsafe_allow_html=True,
+)
