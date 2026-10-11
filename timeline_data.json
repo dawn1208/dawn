@@ -1,16 +1,18 @@
 {
-  "eyebrow": "Một câu chuyện — từ góc nhìn của tôi",
-  "title": "Những mảnh suy nghĩ",
-  "subtitle": "Có những điều lúc xảy ra tôi không biết phải nói thế nào. Sau này nhìn lại, tôi muốn ghi chúng thành từng mảnh nhỏ — không phải để thay đổi quá khứ, chỉ để kể lại phần câu chuyện thuộc về mình.",
+  "eyebrow": "Một phần nhật kí",
+  "title": "Một phần nhật kí",
+  "subtitle": "Những cảm nhận của tui về bà trong các khoảng thời gian khác nhau",
   "chapters": [
     {
-      "title": "Ngày chúng ta bắt đầu",
-      "period": "Những ngày đầu quen nhau",
-      "opening": "Tôi muốn bắt đầu từ những điều bình thường nhất, trước khi mọi chuyện trở nên phức tạp.",
+      "title": "Lớp 10",
+      "period": "lớp 10",
+      "opening": "những khoảng khắc bắt đầu",
       "fragments": [
-        "Lúc đầu, tôi không nghĩ câu chuyện này sẽ đi xa đến vậy.",
+        "chú thích " ( ) " là những suy nghĩ của tui tại thời điểm đó mà không nói ra"
+        "lần đầu tiên tui tiếp xúc với bà là ở trong phòng tin học , lúc đó số thứ tự của hai đứa chưa kế sát nhau . Cô Nhâm đã cho làm một bài nhóm làm về viết file về các công nghệ hiện đại , bà đã mở file ra viết word và tôi đọc nội dung trong sách để bà viết và tôi đã xuôi theo ( Ủa sao không sài AI hay lên copy paste gg cho nhanh mà gõ tay chi z:)?) ",
         "Tôi dần quen với việc có bà trong những cuộc trò chuyện hằng ngày.",
         "Có những cảm xúc xuất hiện chậm đến mức khi nhận ra, tôi đã không còn xem bà như một người bạn bình thường nữa."
+        "Tôi không biết tương lai sẽ đưa hai đứa đến đâu, và tôi không muốn quyết định thay bà."
       ]
     },
     {
